@@ -14,7 +14,23 @@
         <input type="text" placeholder="quote" name="quote">
         <button type="submit">Submit</button>
     </form>
-    
+
+    <div>
+        <h2>Darth Vader Invades!</h2>
+        <p>
+            Replace Yoda's quotes with a quote written by Darth Vader
+        </p>
+        <button id="update-button">Replace Yoda's quote</button>
+    </div>
+
+    <div>
+        <h2>Remove Darth Vader</h2>
+        <p>
+            Delet one of Darth Vader's quotes. Does nothing if there is no more Dart Vader quoetes.
+        </p>
+        <button id="delete-button">Delete Darth Vader's quote</button>
+    </div>
+    <div id="message"></div>
     <ul class="quotes">
         <% for(let entry of quotes) {%>
             <li class="quote">
@@ -23,5 +39,6 @@
             </li>
         <% } %>
     </ul>
+    <script src="/main.js"></script>
 </body>
 </html>

@@ -16,6 +16,8 @@ MongoClient.connect(`mongodb+srv://${process.env.USERNAME}:${process.env.PASSWOR
         app.set('view engine', 'ejs')
     
         app.use(bodyParser.urlencoded({ extended: true }))
+        app.use(bodyParser.json())
+        app.use(express.static('public'))
         
         app.post('/quotes', (req, res) => {
             quoteCollection.insertOne(req.body)
@@ -24,6 +26,37 @@ MongoClient.connect(`mongodb+srv://${process.env.USERNAME}:${process.env.PASSWOR
                     res.redirect('/')
                 })
                 .catch(err => console.error(err))
+        })
+
+        app.put('/quotes', (req, res) => {
+            console.log(req.body)
+
+            quoteCollection.findOneAndUpdate(
+                {name: 'Yoda'},
+                {$set: {
+                    name: req.body.name,
+                    quote: req.body.quote
+                }},
+                {
+                    // create if none
+                    upsert: true
+                }
+            ).then(result => {
+                res.json('Success')
+            })
+            .catch(err => console.error(err))
+        })
+
+        app.delete('/quotes', (req, res) => {
+            quoteCollection.deleteOne(
+                { name: req.body.name }
+            ).then( result => {
+                if(result.deletedCount === 0){
+                    return res.json('No more left to delete')
+                }
+                res.json('Deleted Darth Vader')
+            })
+            .catch(error => console.error(error))
         })
 
         app.get('/', (req, res) => {
@@ -35,6 +68,7 @@ MongoClient.connect(`mongodb+srv://${process.env.USERNAME}:${process.env.PASSWOR
                 .catch(err => console.error(err))
 
         })
+
 
         app.listen(3000, ()=> {
             console.log('Listening on 3000')
